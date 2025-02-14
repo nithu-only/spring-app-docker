@@ -1,6 +1,18 @@
 version: "3.8"
 
 services:
+  nginx:
+    build: ./nginx
+    image: nginx
+    container_name: nginx_container
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+    - spring
+    networks: 
+      - spring-network
+
   mysql:
     container_name: mysql
     image: mysql:latest
@@ -23,8 +35,8 @@ services:
       start_period: 60s
 
   spring:
-    #    build:
-      #      context: .
+    # build:
+      # context: .
     image: nithu02/spring-app
     container_name: spring
     ports:  
@@ -39,6 +51,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      
 networks:
   spring-network:
 volumes:
